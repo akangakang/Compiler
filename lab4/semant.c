@@ -228,21 +228,14 @@ ty=actual_ty(ty);
 	{
 
 		// 返回最后一个表达式的返回类型
-		A_expList seq = get_seqexp_seq(a);
-		struct expty e;
-		if (seq != NULL)
-		{
-			while (seq)
-			{
-				
-				e=transExp(venv, tenv, seq->head);
+			A_expList seq = get_seqexp_seq(a);
+			struct expty exp = expTy(NULL, Ty_Void());
+			while (seq) {
+				exp = transExp(venv, tenv, seq->head);
 				seq = seq->tail;
 			}
 
-			return e;
-		}
-
-		break;
+			return exp;
 		// TODO : if seq == NULL ?
 	}
 
@@ -285,7 +278,7 @@ ty=actual_ty(ty);
 		// 如果有else
 		// 之所以写成A_nilExp 是因为tigher.y 里面
 		// IF exp THEN exp  {$$ = A_IfExp(EM_tokPos, $2, $4, A_NilExp(EM_tokPos))
-		if (get_ifexp_else(a)->kind != A_nilExp)
+		if (get_ifexp_else(a))
 		{
 			struct expty elsee = transExp(venv, tenv, get_ifexp_else(a));
 			if (actual_ty(then.ty) != actual_ty(elsee.ty))

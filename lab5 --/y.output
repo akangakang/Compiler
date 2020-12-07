@@ -1,0 +1,2730 @@
+状态 100冲突：1 项归约/归约
+
+
+语法
+
+    0 $accept: program $end
+
+    1 program: exp
+
+    2 exp: lvalue
+    3    | NIL
+    4    | INT
+    5    | STRING
+    6    | MINUS exp
+    7    | LPAREN expseq RPAREN
+    8    | ID LPAREN actuals RPAREN
+    9    | exp PLUS exp
+   10    | exp MINUS exp
+   11    | exp TIMES exp
+   12    | exp DIVIDE exp
+   13    | exp EQ exp
+   14    | exp NEQ exp
+   15    | exp LT exp
+   16    | exp LE exp
+   17    | exp GT exp
+   18    | exp GE exp
+   19    | ID LBRACE rec RBRACE
+   20    | LPAREN sequencing RPAREN
+   21    | lvalue ASSIGN exp
+   22    | IF exp THEN exp ELSE exp
+   23    | IF exp THEN exp
+   24    | WHILE exp DO exp
+   25    | BREAK
+   26    | FOR ID ASSIGN exp TO exp DO exp
+   27    | LET decs IN expseq END
+   28    | ID LBRACK exp RBRACK OF exp
+   29    | exp AND exp
+   30    | exp OR exp
+
+   31 expseq: %empty
+   32       | sequencing_exps
+
+   33 actuals: %empty
+   34        | nonemptyactuals
+
+   35 nonemptyactuals: exp
+   36                | exp COMMA nonemptyactuals
+
+   37 sequencing: exp SEMICOLON sequencing_exps
+
+   38 sequencing_exps: exp
+   39                | exp SEMICOLON sequencing_exps
+
+   40 lvalue: ID
+   41       | oneormore
+
+   42 one: ID DOT ID
+   43    | ID LBRACK exp RBRACK
+
+   44 oneormore: one
+   45          | oneormore DOT ID
+   46          | oneormore LBRACK exp RBRACK
+
+   47 decs: %empty
+   48     | decs_nonempty
+
+   49 decs_nonempty: decs_nonempty_s
+   50              | decs_nonempty_s decs_nonempty
+
+   51 decs_nonempty_s: tydec
+   52                | vardec
+   53                | fundec
+
+   54 vardec: VAR ID ASSIGN exp
+   55       | VAR ID COLON ID ASSIGN exp
+
+   56 rec: %empty
+   57    | rec_nonempty
+
+   58 rec_nonempty: rec_one
+   59             | rec_one COMMA rec_nonempty
+
+   60 rec_one: ID EQ exp
+
+   61 tydec: tydec_one
+   62      | tydec_one tydec
+
+   63 tydec_one: TYPE ID EQ ty
+
+   64 tyfields: %empty
+   65         | tyfields_nonempty
+
+   66 tyfields_nonempty: ID COLON ID
+   67                  | ID COLON ID COMMA tyfields_nonempty
+
+   68 ty: ID
+   69   | LBRACE tyfields RBRACE
+   70   | ARRAY OF ID
+
+   71 fundec: fundec_one
+   72       | fundec_one fundec
+
+   73 fundec_one: FUNCTION ID LPAREN tyfields RPAREN EQ exp
+   74           | FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp
+
+
+终结语词，附有它们出现处的规则
+
+$end (0) 0
+error (256)
+ID <sval> (258) 8 19 26 28 40 42 43 45 54 55 60 63 66 67 68 70 73 74
+STRING <sval> (259) 5
+INT <ival> (260) 4
+COMMA (261) 36 59 67
+COLON (262) 55 66 67 74
+SEMICOLON (263) 37 39
+LPAREN (264) 7 8 20 73 74
+RPAREN (265) 7 8 20 73 74
+LBRACK (266) 28 43 46
+RBRACK (267) 28 43 46
+LBRACE (268) 19 69
+RBRACE (269) 19 69
+DOT (270) 42 45
+PLUS (271) 9
+MINUS (272) 6 10
+TIMES (273) 11
+DIVIDE (274) 12
+EQ (275) 13 60 63 73 74
+NEQ (276) 14
+LT (277) 15
+LE (278) 16
+GT (279) 17
+GE (280) 18
+AND (281) 29
+OR (282) 30
+ASSIGN (283) 21 26 54 55
+ARRAY (284) 70
+IF (285) 22 23
+THEN (286) 22 23
+ELSE (287) 22
+WHILE (288) 24
+FOR (289) 26
+TO (290) 26
+DO (291) 24 26
+LET (292) 27
+IN (293) 27
+END (294) 27
+OF (295) 28 70
+BREAK (296) 25
+NIL (297) 3
+FUNCTION (298) 73 74
+VAR (299) 54 55
+TYPE (300) 63
+LTS (301)
+UMINUS (302)
+
+
+非终结语词，附有它们出现处的规则
+
+$accept (48)
+    于左侧： 0
+program (49)
+    于左侧： 1, 于右侧： 0
+exp <exp> (50)
+    于左侧： 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21
+    22 23 24 25 26 27 28 29 30, 于右侧： 1 6 9 10 11 12 13 14 15
+    16 17 18 21 22 23 24 26 28 29 30 35 36 37 38 39 43 46 54 55 60
+    73 74
+expseq <exp> (51)
+    于左侧： 31 32, 于右侧： 7 27
+actuals <explist> (52)
+    于左侧： 33 34, 于右侧： 8
+nonemptyactuals <explist> (53)
+    于左侧： 35 36, 于右侧： 34 36
+sequencing <explist> (54)
+    于左侧： 37, 于右侧： 20
+sequencing_exps <explist> (55)
+    于左侧： 38 39, 于右侧： 32 37 39
+lvalue <var> (56)
+    于左侧： 40 41, 于右侧： 2 21
+one <var> (57)
+    于左侧： 42 43, 于右侧： 44
+oneormore <var> (58)
+    于左侧： 44 45 46, 于右侧： 41 45 46
+decs <declist> (59)
+    于左侧： 47 48, 于右侧： 27
+decs_nonempty <declist> (60)
+    于左侧： 49 50, 于右侧： 48 50
+decs_nonempty_s <dec> (61)
+    于左侧： 51 52 53, 于右侧： 49 50
+vardec <dec> (62)
+    于左侧： 54 55, 于右侧： 52
+rec <efieldlist> (63)
+    于左侧： 56 57, 于右侧： 19
+rec_nonempty <efieldlist> (64)
+    于左侧： 58 59, 于右侧： 57 59
+rec_one <efield> (65)
+    于左侧： 60, 于右侧： 58 59
+tydec <nametylist> (66)
+    于左侧： 61 62, 于右侧： 51 62
+tydec_one <namety> (67)
+    于左侧： 63, 于右侧： 61 62
+tyfields <fieldlist> (68)
+    于左侧： 64 65, 于右侧： 69 73 74
+tyfields_nonempty <fieldlist> (69)
+    于左侧： 66 67, 于右侧： 65 67
+ty <ty> (70)
+    于左侧： 68 69 70, 于右侧： 63
+fundec <fundeclist> (71)
+    于左侧： 71 72, 于右侧： 53 72
+fundec_one <fundec> (72)
+    于左侧： 73 74, 于右侧： 71 72
+
+
+状态 0
+
+    0 $accept: . program $end
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    program    转到状态 12
+    exp        转到状态 13
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 1
+
+    8 exp: ID . LPAREN actuals RPAREN
+   19    | ID . LBRACE rec RBRACE
+   28    | ID . LBRACK exp RBRACK OF exp
+   40 lvalue: ID .
+   42 one: ID . DOT ID
+   43    | ID . LBRACK exp RBRACK
+
+    LPAREN  偏移，并进入状态 17
+    LBRACK  偏移，并进入状态 18
+    LBRACE  偏移，并进入状态 19
+    DOT     偏移，并进入状态 20
+
+    $default  使用规则 40 以归约 (lvalue)
+
+
+状态 2
+
+    5 exp: STRING .
+
+    $default  使用规则 5 以归约 (exp)
+
+
+状态 3
+
+    4 exp: INT .
+
+    $default  使用规则 4 以归约 (exp)
+
+
+状态 4
+
+    7 exp: LPAREN . expseq RPAREN
+   20    | LPAREN . sequencing RPAREN
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    $default  使用规则 31 以归约 (expseq)
+
+    exp              转到状态 21
+    expseq           转到状态 22
+    sequencing       转到状态 23
+    sequencing_exps  转到状态 24
+    lvalue           转到状态 14
+    one              转到状态 15
+    oneormore        转到状态 16
+
+
+状态 5
+
+    6 exp: MINUS . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 25
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 6
+
+   22 exp: IF . exp THEN exp ELSE exp
+   23    | IF . exp THEN exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 26
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 7
+
+   24 exp: WHILE . exp DO exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 27
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 8
+
+   26 exp: FOR . ID ASSIGN exp TO exp DO exp
+
+    ID  偏移，并进入状态 28
+
+
+状态 9
+
+   27 exp: LET . decs IN expseq END
+
+    FUNCTION  偏移，并进入状态 29
+    VAR       偏移，并进入状态 30
+    TYPE      偏移，并进入状态 31
+
+    $default  使用规则 47 以归约 (decs)
+
+    decs             转到状态 32
+    decs_nonempty    转到状态 33
+    decs_nonempty_s  转到状态 34
+    vardec           转到状态 35
+    tydec            转到状态 36
+    tydec_one        转到状态 37
+    fundec           转到状态 38
+    fundec_one       转到状态 39
+
+
+状态 10
+
+   25 exp: BREAK .
+
+    $default  使用规则 25 以归约 (exp)
+
+
+状态 11
+
+    3 exp: NIL .
+
+    $default  使用规则 3 以归约 (exp)
+
+
+状态 12
+
+    0 $accept: program . $end
+
+    $end  偏移，并进入状态 40
+
+
+状态 13
+
+    1 program: exp .
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 1 以归约 (program)
+
+
+状态 14
+
+    2 exp: lvalue .
+   21    | lvalue . ASSIGN exp
+
+    ASSIGN  偏移，并进入状态 53
+
+    $default  使用规则 2 以归约 (exp)
+
+
+状态 15
+
+   44 oneormore: one .
+
+    $default  使用规则 44 以归约 (oneormore)
+
+
+状态 16
+
+   41 lvalue: oneormore .
+   45 oneormore: oneormore . DOT ID
+   46          | oneormore . LBRACK exp RBRACK
+
+    LBRACK  偏移，并进入状态 54
+    DOT     偏移，并进入状态 55
+
+    $default  使用规则 41 以归约 (lvalue)
+
+
+状态 17
+
+    8 exp: ID LPAREN . actuals RPAREN
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    $default  使用规则 33 以归约 (actuals)
+
+    exp              转到状态 56
+    actuals          转到状态 57
+    nonemptyactuals  转到状态 58
+    lvalue           转到状态 14
+    one              转到状态 15
+    oneormore        转到状态 16
+
+
+状态 18
+
+   28 exp: ID LBRACK . exp RBRACK OF exp
+   43 one: ID LBRACK . exp RBRACK
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 59
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 19
+
+   19 exp: ID LBRACE . rec RBRACE
+
+    ID  偏移，并进入状态 60
+
+    $default  使用规则 56 以归约 (rec)
+
+    rec           转到状态 61
+    rec_nonempty  转到状态 62
+    rec_one       转到状态 63
+
+
+状态 20
+
+   42 one: ID DOT . ID
+
+    ID  偏移，并进入状态 64
+
+
+状态 21
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   37 sequencing: exp . SEMICOLON sequencing_exps
+   38 sequencing_exps: exp .
+   39                | exp . SEMICOLON sequencing_exps
+
+    SEMICOLON  偏移，并进入状态 65
+    PLUS       偏移，并进入状态 41
+    MINUS      偏移，并进入状态 42
+    TIMES      偏移，并进入状态 43
+    DIVIDE     偏移，并进入状态 44
+    EQ         偏移，并进入状态 45
+    NEQ        偏移，并进入状态 46
+    LT         偏移，并进入状态 47
+    LE         偏移，并进入状态 48
+    GT         偏移，并进入状态 49
+    GE         偏移，并进入状态 50
+    AND        偏移，并进入状态 51
+    OR         偏移，并进入状态 52
+
+    $default  使用规则 38 以归约 (sequencing_exps)
+
+
+状态 22
+
+    7 exp: LPAREN expseq . RPAREN
+
+    RPAREN  偏移，并进入状态 66
+
+
+状态 23
+
+   20 exp: LPAREN sequencing . RPAREN
+
+    RPAREN  偏移，并进入状态 67
+
+
+状态 24
+
+   32 expseq: sequencing_exps .
+
+    $default  使用规则 32 以归约 (expseq)
+
+
+状态 25
+
+    6 exp: MINUS exp .
+    9    | exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    $default  使用规则 6 以归约 (exp)
+
+
+状态 26
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   22    | IF exp . THEN exp ELSE exp
+   23    | IF exp . THEN exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+    THEN    偏移，并进入状态 68
+
+
+状态 27
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   24    | WHILE exp . DO exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+    DO      偏移，并进入状态 69
+
+
+状态 28
+
+   26 exp: FOR ID . ASSIGN exp TO exp DO exp
+
+    ASSIGN  偏移，并进入状态 70
+
+
+状态 29
+
+   73 fundec_one: FUNCTION . ID LPAREN tyfields RPAREN EQ exp
+   74           | FUNCTION . ID LPAREN tyfields RPAREN COLON ID EQ exp
+
+    ID  偏移，并进入状态 71
+
+
+状态 30
+
+   54 vardec: VAR . ID ASSIGN exp
+   55       | VAR . ID COLON ID ASSIGN exp
+
+    ID  偏移，并进入状态 72
+
+
+状态 31
+
+   63 tydec_one: TYPE . ID EQ ty
+
+    ID  偏移，并进入状态 73
+
+
+状态 32
+
+   27 exp: LET decs . IN expseq END
+
+    IN  偏移，并进入状态 74
+
+
+状态 33
+
+   48 decs: decs_nonempty .
+
+    $default  使用规则 48 以归约 (decs)
+
+
+状态 34
+
+   49 decs_nonempty: decs_nonempty_s .
+   50              | decs_nonempty_s . decs_nonempty
+
+    FUNCTION  偏移，并进入状态 29
+    VAR       偏移，并进入状态 30
+    TYPE      偏移，并进入状态 31
+
+    $default  使用规则 49 以归约 (decs_nonempty)
+
+    decs_nonempty    转到状态 75
+    decs_nonempty_s  转到状态 34
+    vardec           转到状态 35
+    tydec            转到状态 36
+    tydec_one        转到状态 37
+    fundec           转到状态 38
+    fundec_one       转到状态 39
+
+
+状态 35
+
+   52 decs_nonempty_s: vardec .
+
+    $default  使用规则 52 以归约 (decs_nonempty_s)
+
+
+状态 36
+
+   51 decs_nonempty_s: tydec .
+
+    $default  使用规则 51 以归约 (decs_nonempty_s)
+
+
+状态 37
+
+   61 tydec: tydec_one .
+   62      | tydec_one . tydec
+
+    TYPE  偏移，并进入状态 31
+
+    $default  使用规则 61 以归约 (tydec)
+
+    tydec      转到状态 76
+    tydec_one  转到状态 37
+
+
+状态 38
+
+   53 decs_nonempty_s: fundec .
+
+    $default  使用规则 53 以归约 (decs_nonempty_s)
+
+
+状态 39
+
+   71 fundec: fundec_one .
+   72       | fundec_one . fundec
+
+    FUNCTION  偏移，并进入状态 29
+
+    $default  使用规则 71 以归约 (fundec)
+
+    fundec      转到状态 77
+    fundec_one  转到状态 39
+
+
+状态 40
+
+    0 $accept: program $end .
+
+    $default  接受
+
+
+状态 41
+
+    9 exp: exp PLUS . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 78
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 42
+
+   10 exp: exp MINUS . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 79
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 43
+
+   11 exp: exp TIMES . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 80
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 44
+
+   12 exp: exp DIVIDE . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 81
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 45
+
+   13 exp: exp EQ . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 82
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 46
+
+   14 exp: exp NEQ . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 83
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 47
+
+   15 exp: exp LT . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 84
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 48
+
+   16 exp: exp LE . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 85
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 49
+
+   17 exp: exp GT . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 86
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 50
+
+   18 exp: exp GE . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 87
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 51
+
+   29 exp: exp AND . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 88
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 52
+
+   30 exp: exp OR . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 89
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 53
+
+   21 exp: lvalue ASSIGN . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 90
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 54
+
+   46 oneormore: oneormore LBRACK . exp RBRACK
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 91
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 55
+
+   45 oneormore: oneormore DOT . ID
+
+    ID  偏移，并进入状态 92
+
+
+状态 56
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   35 nonemptyactuals: exp .
+   36                | exp . COMMA nonemptyactuals
+
+    COMMA   偏移，并进入状态 93
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 35 以归约 (nonemptyactuals)
+
+
+状态 57
+
+    8 exp: ID LPAREN actuals . RPAREN
+
+    RPAREN  偏移，并进入状态 94
+
+
+状态 58
+
+   34 actuals: nonemptyactuals .
+
+    $default  使用规则 34 以归约 (actuals)
+
+
+状态 59
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   28    | ID LBRACK exp . RBRACK OF exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   43 one: ID LBRACK exp . RBRACK
+
+    RBRACK  偏移，并进入状态 95
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+
+状态 60
+
+   60 rec_one: ID . EQ exp
+
+    EQ  偏移，并进入状态 96
+
+
+状态 61
+
+   19 exp: ID LBRACE rec . RBRACE
+
+    RBRACE  偏移，并进入状态 97
+
+
+状态 62
+
+   57 rec: rec_nonempty .
+
+    $default  使用规则 57 以归约 (rec)
+
+
+状态 63
+
+   58 rec_nonempty: rec_one .
+   59             | rec_one . COMMA rec_nonempty
+
+    COMMA  偏移，并进入状态 98
+
+    $default  使用规则 58 以归约 (rec_nonempty)
+
+
+状态 64
+
+   42 one: ID DOT ID .
+
+    $default  使用规则 42 以归约 (one)
+
+
+状态 65
+
+   37 sequencing: exp SEMICOLON . sequencing_exps
+   39 sequencing_exps: exp SEMICOLON . sequencing_exps
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp              转到状态 99
+    sequencing_exps  转到状态 100
+    lvalue           转到状态 14
+    one              转到状态 15
+    oneormore        转到状态 16
+
+
+状态 66
+
+    7 exp: LPAREN expseq RPAREN .
+
+    $default  使用规则 7 以归约 (exp)
+
+
+状态 67
+
+   20 exp: LPAREN sequencing RPAREN .
+
+    $default  使用规则 20 以归约 (exp)
+
+
+状态 68
+
+   22 exp: IF exp THEN . exp ELSE exp
+   23    | IF exp THEN . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 101
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 69
+
+   24 exp: WHILE exp DO . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 102
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 70
+
+   26 exp: FOR ID ASSIGN . exp TO exp DO exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 103
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 71
+
+   73 fundec_one: FUNCTION ID . LPAREN tyfields RPAREN EQ exp
+   74           | FUNCTION ID . LPAREN tyfields RPAREN COLON ID EQ exp
+
+    LPAREN  偏移，并进入状态 104
+
+
+状态 72
+
+   54 vardec: VAR ID . ASSIGN exp
+   55       | VAR ID . COLON ID ASSIGN exp
+
+    COLON   偏移，并进入状态 105
+    ASSIGN  偏移，并进入状态 106
+
+
+状态 73
+
+   63 tydec_one: TYPE ID . EQ ty
+
+    EQ  偏移，并进入状态 107
+
+
+状态 74
+
+   27 exp: LET decs IN . expseq END
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    $default  使用规则 31 以归约 (expseq)
+
+    exp              转到状态 99
+    expseq           转到状态 108
+    sequencing_exps  转到状态 24
+    lvalue           转到状态 14
+    one              转到状态 15
+    oneormore        转到状态 16
+
+
+状态 75
+
+   50 decs_nonempty: decs_nonempty_s decs_nonempty .
+
+    $default  使用规则 50 以归约 (decs_nonempty)
+
+
+状态 76
+
+   62 tydec: tydec_one tydec .
+
+    $default  使用规则 62 以归约 (tydec)
+
+
+状态 77
+
+   72 fundec: fundec_one fundec .
+
+    $default  使用规则 72 以归约 (fundec)
+
+
+状态 78
+
+    9 exp: exp . PLUS exp
+    9    | exp PLUS exp .
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+
+    $default  使用规则 9 以归约 (exp)
+
+
+状态 79
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   10    | exp MINUS exp .
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+
+    $default  使用规则 10 以归约 (exp)
+
+
+状态 80
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   11    | exp TIMES exp .
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    $default  使用规则 11 以归约 (exp)
+
+
+状态 81
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   12    | exp DIVIDE exp .
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    $default  使用规则 12 以归约 (exp)
+
+
+状态 82
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   13    | exp EQ exp .
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+
+    EQ   错误 (非相联的)
+    NEQ  错误 (非相联的)
+    LT   错误 (非相联的)
+    LE   错误 (非相联的)
+    GT   错误 (非相联的)
+    GE   错误 (非相联的)
+
+    $default  使用规则 13 以归约 (exp)
+
+
+状态 83
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   14    | exp NEQ exp .
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+
+    EQ   错误 (非相联的)
+    NEQ  错误 (非相联的)
+    LT   错误 (非相联的)
+    LE   错误 (非相联的)
+    GT   错误 (非相联的)
+    GE   错误 (非相联的)
+
+    $default  使用规则 14 以归约 (exp)
+
+
+状态 84
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   15    | exp LT exp .
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+
+    EQ   错误 (非相联的)
+    NEQ  错误 (非相联的)
+    LT   错误 (非相联的)
+    LE   错误 (非相联的)
+    GT   错误 (非相联的)
+    GE   错误 (非相联的)
+
+    $default  使用规则 15 以归约 (exp)
+
+
+状态 85
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   16    | exp LE exp .
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+
+    EQ   错误 (非相联的)
+    NEQ  错误 (非相联的)
+    LT   错误 (非相联的)
+    LE   错误 (非相联的)
+    GT   错误 (非相联的)
+    GE   错误 (非相联的)
+
+    $default  使用规则 16 以归约 (exp)
+
+
+状态 86
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   17    | exp GT exp .
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+
+    EQ   错误 (非相联的)
+    NEQ  错误 (非相联的)
+    LT   错误 (非相联的)
+    LE   错误 (非相联的)
+    GT   错误 (非相联的)
+    GE   错误 (非相联的)
+
+    $default  使用规则 17 以归约 (exp)
+
+
+状态 87
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   18    | exp GE exp .
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+
+    EQ   错误 (非相联的)
+    NEQ  错误 (非相联的)
+    LT   错误 (非相联的)
+    LE   错误 (非相联的)
+    GT   错误 (非相联的)
+    GE   错误 (非相联的)
+
+    $default  使用规则 18 以归约 (exp)
+
+
+状态 88
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   29    | exp AND exp .
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+
+    $default  使用规则 29 以归约 (exp)
+
+
+状态 89
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   30    | exp OR exp .
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+
+    $default  使用规则 30 以归约 (exp)
+
+
+状态 90
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   21    | lvalue ASSIGN exp .
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 21 以归约 (exp)
+
+
+状态 91
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   46 oneormore: oneormore LBRACK exp . RBRACK
+
+    RBRACK  偏移，并进入状态 109
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+
+状态 92
+
+   45 oneormore: oneormore DOT ID .
+
+    $default  使用规则 45 以归约 (oneormore)
+
+
+状态 93
+
+   36 nonemptyactuals: exp COMMA . nonemptyactuals
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp              转到状态 56
+    nonemptyactuals  转到状态 110
+    lvalue           转到状态 14
+    one              转到状态 15
+    oneormore        转到状态 16
+
+
+状态 94
+
+    8 exp: ID LPAREN actuals RPAREN .
+
+    $default  使用规则 8 以归约 (exp)
+
+
+状态 95
+
+   28 exp: ID LBRACK exp RBRACK . OF exp
+   43 one: ID LBRACK exp RBRACK .
+
+    OF  偏移，并进入状态 111
+
+    $default  使用规则 43 以归约 (one)
+
+
+状态 96
+
+   60 rec_one: ID EQ . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 112
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 97
+
+   19 exp: ID LBRACE rec RBRACE .
+
+    $default  使用规则 19 以归约 (exp)
+
+
+状态 98
+
+   59 rec_nonempty: rec_one COMMA . rec_nonempty
+
+    ID  偏移，并进入状态 60
+
+    rec_nonempty  转到状态 113
+    rec_one       转到状态 63
+
+
+状态 99
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   38 sequencing_exps: exp .
+   39                | exp . SEMICOLON sequencing_exps
+
+    SEMICOLON  偏移，并进入状态 114
+    PLUS       偏移，并进入状态 41
+    MINUS      偏移，并进入状态 42
+    TIMES      偏移，并进入状态 43
+    DIVIDE     偏移，并进入状态 44
+    EQ         偏移，并进入状态 45
+    NEQ        偏移，并进入状态 46
+    LT         偏移，并进入状态 47
+    LE         偏移，并进入状态 48
+    GT         偏移，并进入状态 49
+    GE         偏移，并进入状态 50
+    AND        偏移，并进入状态 51
+    OR         偏移，并进入状态 52
+
+    $default  使用规则 38 以归约 (sequencing_exps)
+
+
+状态 100
+
+   37 sequencing: exp SEMICOLON sequencing_exps .
+   39 sequencing_exps: exp SEMICOLON sequencing_exps .
+
+    RPAREN    使用规则 37 以归约 (sequencing)
+    RPAREN    [使用规则 39 以归约 (sequencing_exps)]
+    $default  使用规则 37 以归约 (sequencing)
+
+
+状态 101
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   22    | IF exp THEN exp . ELSE exp
+   23    | IF exp THEN exp .
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+    ELSE    偏移，并进入状态 115
+
+    $default  使用规则 23 以归约 (exp)
+
+
+状态 102
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   24    | WHILE exp DO exp .
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 24 以归约 (exp)
+
+
+状态 103
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   26    | FOR ID ASSIGN exp . TO exp DO exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+    TO      偏移，并进入状态 116
+
+
+状态 104
+
+   73 fundec_one: FUNCTION ID LPAREN . tyfields RPAREN EQ exp
+   74           | FUNCTION ID LPAREN . tyfields RPAREN COLON ID EQ exp
+
+    ID  偏移，并进入状态 117
+
+    $default  使用规则 64 以归约 (tyfields)
+
+    tyfields           转到状态 118
+    tyfields_nonempty  转到状态 119
+
+
+状态 105
+
+   55 vardec: VAR ID COLON . ID ASSIGN exp
+
+    ID  偏移，并进入状态 120
+
+
+状态 106
+
+   54 vardec: VAR ID ASSIGN . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 121
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 107
+
+   63 tydec_one: TYPE ID EQ . ty
+
+    ID      偏移，并进入状态 122
+    LBRACE  偏移，并进入状态 123
+    ARRAY   偏移，并进入状态 124
+
+    ty  转到状态 125
+
+
+状态 108
+
+   27 exp: LET decs IN expseq . END
+
+    END  偏移，并进入状态 126
+
+
+状态 109
+
+   46 oneormore: oneormore LBRACK exp RBRACK .
+
+    $default  使用规则 46 以归约 (oneormore)
+
+
+状态 110
+
+   36 nonemptyactuals: exp COMMA nonemptyactuals .
+
+    $default  使用规则 36 以归约 (nonemptyactuals)
+
+
+状态 111
+
+   28 exp: ID LBRACK exp RBRACK OF . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 127
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 112
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   60 rec_one: ID EQ exp .
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 60 以归约 (rec_one)
+
+
+状态 113
+
+   59 rec_nonempty: rec_one COMMA rec_nonempty .
+
+    $default  使用规则 59 以归约 (rec_nonempty)
+
+
+状态 114
+
+   39 sequencing_exps: exp SEMICOLON . sequencing_exps
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp              转到状态 99
+    sequencing_exps  转到状态 128
+    lvalue           转到状态 14
+    one              转到状态 15
+    oneormore        转到状态 16
+
+
+状态 115
+
+   22 exp: IF exp THEN exp ELSE . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 129
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 116
+
+   26 exp: FOR ID ASSIGN exp TO . exp DO exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 130
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 117
+
+   66 tyfields_nonempty: ID . COLON ID
+   67                  | ID . COLON ID COMMA tyfields_nonempty
+
+    COLON  偏移，并进入状态 131
+
+
+状态 118
+
+   73 fundec_one: FUNCTION ID LPAREN tyfields . RPAREN EQ exp
+   74           | FUNCTION ID LPAREN tyfields . RPAREN COLON ID EQ exp
+
+    RPAREN  偏移，并进入状态 132
+
+
+状态 119
+
+   65 tyfields: tyfields_nonempty .
+
+    $default  使用规则 65 以归约 (tyfields)
+
+
+状态 120
+
+   55 vardec: VAR ID COLON ID . ASSIGN exp
+
+    ASSIGN  偏移，并进入状态 133
+
+
+状态 121
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   54 vardec: VAR ID ASSIGN exp .
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 54 以归约 (vardec)
+
+
+状态 122
+
+   68 ty: ID .
+
+    $default  使用规则 68 以归约 (ty)
+
+
+状态 123
+
+   69 ty: LBRACE . tyfields RBRACE
+
+    ID  偏移，并进入状态 117
+
+    $default  使用规则 64 以归约 (tyfields)
+
+    tyfields           转到状态 134
+    tyfields_nonempty  转到状态 119
+
+
+状态 124
+
+   70 ty: ARRAY . OF ID
+
+    OF  偏移，并进入状态 135
+
+
+状态 125
+
+   63 tydec_one: TYPE ID EQ ty .
+
+    $default  使用规则 63 以归约 (tydec_one)
+
+
+状态 126
+
+   27 exp: LET decs IN expseq END .
+
+    $default  使用规则 27 以归约 (exp)
+
+
+状态 127
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   28    | ID LBRACK exp RBRACK OF exp .
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 28 以归约 (exp)
+
+
+状态 128
+
+   39 sequencing_exps: exp SEMICOLON sequencing_exps .
+
+    $default  使用规则 39 以归约 (sequencing_exps)
+
+
+状态 129
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   22    | IF exp THEN exp ELSE exp .
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 22 以归约 (exp)
+
+
+状态 130
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   26    | FOR ID ASSIGN exp TO exp . DO exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+    DO      偏移，并进入状态 136
+
+
+状态 131
+
+   66 tyfields_nonempty: ID COLON . ID
+   67                  | ID COLON . ID COMMA tyfields_nonempty
+
+    ID  偏移，并进入状态 137
+
+
+状态 132
+
+   73 fundec_one: FUNCTION ID LPAREN tyfields RPAREN . EQ exp
+   74           | FUNCTION ID LPAREN tyfields RPAREN . COLON ID EQ exp
+
+    COLON  偏移，并进入状态 138
+    EQ     偏移，并进入状态 139
+
+
+状态 133
+
+   55 vardec: VAR ID COLON ID ASSIGN . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 140
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 134
+
+   69 ty: LBRACE tyfields . RBRACE
+
+    RBRACE  偏移，并进入状态 141
+
+
+状态 135
+
+   70 ty: ARRAY OF . ID
+
+    ID  偏移，并进入状态 142
+
+
+状态 136
+
+   26 exp: FOR ID ASSIGN exp TO exp DO . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 143
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 137
+
+   66 tyfields_nonempty: ID COLON ID .
+   67                  | ID COLON ID . COMMA tyfields_nonempty
+
+    COMMA  偏移，并进入状态 144
+
+    $default  使用规则 66 以归约 (tyfields_nonempty)
+
+
+状态 138
+
+   74 fundec_one: FUNCTION ID LPAREN tyfields RPAREN COLON . ID EQ exp
+
+    ID  偏移，并进入状态 145
+
+
+状态 139
+
+   73 fundec_one: FUNCTION ID LPAREN tyfields RPAREN EQ . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 146
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 140
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   55 vardec: VAR ID COLON ID ASSIGN exp .
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 55 以归约 (vardec)
+
+
+状态 141
+
+   69 ty: LBRACE tyfields RBRACE .
+
+    $default  使用规则 69 以归约 (ty)
+
+
+状态 142
+
+   70 ty: ARRAY OF ID .
+
+    $default  使用规则 70 以归约 (ty)
+
+
+状态 143
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   26    | FOR ID ASSIGN exp TO exp DO exp .
+   29    | exp . AND exp
+   30    | exp . OR exp
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 26 以归约 (exp)
+
+
+状态 144
+
+   67 tyfields_nonempty: ID COLON ID COMMA . tyfields_nonempty
+
+    ID  偏移，并进入状态 117
+
+    tyfields_nonempty  转到状态 147
+
+
+状态 145
+
+   74 fundec_one: FUNCTION ID LPAREN tyfields RPAREN COLON ID . EQ exp
+
+    EQ  偏移，并进入状态 148
+
+
+状态 146
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   73 fundec_one: FUNCTION ID LPAREN tyfields RPAREN EQ exp .
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 73 以归约 (fundec_one)
+
+
+状态 147
+
+   67 tyfields_nonempty: ID COLON ID COMMA tyfields_nonempty .
+
+    $default  使用规则 67 以归约 (tyfields_nonempty)
+
+
+状态 148
+
+   74 fundec_one: FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ . exp
+
+    ID      偏移，并进入状态 1
+    STRING  偏移，并进入状态 2
+    INT     偏移，并进入状态 3
+    LPAREN  偏移，并进入状态 4
+    MINUS   偏移，并进入状态 5
+    IF      偏移，并进入状态 6
+    WHILE   偏移，并进入状态 7
+    FOR     偏移，并进入状态 8
+    LET     偏移，并进入状态 9
+    BREAK   偏移，并进入状态 10
+    NIL     偏移，并进入状态 11
+
+    exp        转到状态 149
+    lvalue     转到状态 14
+    one        转到状态 15
+    oneormore  转到状态 16
+
+
+状态 149
+
+    9 exp: exp . PLUS exp
+   10    | exp . MINUS exp
+   11    | exp . TIMES exp
+   12    | exp . DIVIDE exp
+   13    | exp . EQ exp
+   14    | exp . NEQ exp
+   15    | exp . LT exp
+   16    | exp . LE exp
+   17    | exp . GT exp
+   18    | exp . GE exp
+   29    | exp . AND exp
+   30    | exp . OR exp
+   74 fundec_one: FUNCTION ID LPAREN tyfields RPAREN COLON ID EQ exp .
+
+    PLUS    偏移，并进入状态 41
+    MINUS   偏移，并进入状态 42
+    TIMES   偏移，并进入状态 43
+    DIVIDE  偏移，并进入状态 44
+    EQ      偏移，并进入状态 45
+    NEQ     偏移，并进入状态 46
+    LT      偏移，并进入状态 47
+    LE      偏移，并进入状态 48
+    GT      偏移，并进入状态 49
+    GE      偏移，并进入状态 50
+    AND     偏移，并进入状态 51
+    OR      偏移，并进入状态 52
+
+    $default  使用规则 74 以归约 (fundec_one)
