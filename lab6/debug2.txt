@@ -1,0 +1,7 @@
+runtime.c: In function ‘main’:
+runtime.c:56:9: warning: implicit declaration of function ‘tigermain’ [-Wimplicit-function-declaration]
+  return tigermain(0 /* static link */);
+         ^~~~~~~~~
+/usr/bin/ld: /tmp/ccspysLm.o: in function `main':
+runtime.c:(.text+0x20d): undefined reference to `tigermain'
+collect2: error: ld returned 1 exit status
